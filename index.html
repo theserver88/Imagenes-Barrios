@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 100%px;
+            height: 950px;
+        }
+        </style>
+        <title>Imagenes Barrios</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:19, minZoom:11
+        }).fitBounds([[-40.77105839686279,-71.66469691658753],[-40.7602953922962,-71.63781357998705]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix();
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        map.createPane('pane_CurvasNivel_1');
+        map.getPane('pane_CurvasNivel_1').style.zIndex = 401;
+        var layer_CurvasNivel_1 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5873643:Curvas Nivel_LM", {
+            pane: 'pane_CurvasNivel_1',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_RadiosCensales2010_2');
+        map.getPane('pane_RadiosCensales2010_2').style.zIndex = 402;
+        var layer_RadiosCensales2010_2 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5873646:radios_censales_2010", {
+            pane: 'pane_RadiosCensales2010_2',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_PartidosRMBA_3');
+        map.getPane('pane_PartidosRMBA_3').style.zIndex = 403;
+        var layer_PartidosRMBA_3 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5882953:Partidos RMBA", {
+            pane: 'pane_PartidosRMBA_3',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_PartidosRMBA_3);
+        map.createPane('pane__4');
+        map.getPane('pane__4').style.zIndex = 404;
+        var layer__4 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5882953:Partidos RMBA_text", {
+            pane: 'pane__4',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer__4);
+        map.createPane('pane_RedFFCC_5');
+        map.getPane('pane_RedFFCC_5').style.zIndex = 405;
+        var layer_RedFFCC_5 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5873647:Red FFCC", {
+            pane: 'pane_RedFFCC_5',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_RutasNacionales_6');
+        map.getPane('pane_RutasNacionales_6').style.zIndex = 406;
+        var layer_RutasNacionales_6 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5873648:Rutas Nacionales", {
+            pane: 'pane_RutasNacionales_6',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_BarrioFiorito_7');
+        map.getPane('pane_BarrioFiorito_7').style.zIndex = 407;
+        var img_BarrioFiorito_7 = 'data/BarrioFiorito_7.png';
+        var img_bounds_BarrioFiorito_7 = [[-34.7228302709872,-58.45576541191073],[-34.70044370370707,-58.420943118237034]];
+        var layer_BarrioFiorito_7 = new L.imageOverlay(img_BarrioFiorito_7,
+                                              img_bounds_BarrioFiorito_7,
+                                              {pane: 'pane_BarrioFiorito_7'});
+        bounds_group.addLayer(layer_BarrioFiorito_7);
+        map.createPane('pane_Barrio17deNoviembre_8');
+        map.getPane('pane_Barrio17deNoviembre_8').style.zIndex = 408;
+        var img_Barrio17deNoviembre_8 = 'data/Barrio17deNoviembre_8.png';
+        var img_bounds_Barrio17deNoviembre_8 = [[-34.71274248062276,-58.490914594850366],[-34.69790755244023,-58.46571685113079]];
+        var layer_Barrio17deNoviembre_8 = new L.imageOverlay(img_Barrio17deNoviembre_8,
+                                              img_bounds_Barrio17deNoviembre_8,
+                                              {pane: 'pane_Barrio17deNoviembre_8'});
+        bounds_group.addLayer(layer_Barrio17deNoviembre_8);
+        map.createPane('pane_BarriosPopularesPais_9');
+        map.getPane('pane_BarriosPopularesPais_9').style.zIndex = 409;
+        var layer_BarriosPopularesPais_9 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5873642:Barrios_Populares_Pais", {
+            pane: 'pane_BarriosPopularesPais_9',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_BarriosPopularesLaMatanza_10');
+        map.getPane('pane_BarriosPopularesLaMatanza_10').style.zIndex = 410;
+        var layer_BarriosPopularesLaMatanza_10 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5873641:Barrios Populares_matanza", {
+            pane: 'pane_BarriosPopularesLaMatanza_10',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_VLANGO__11');
+        map.getPane('pane_VLANGO__11').style.zIndex = 411;
+        var img_VLANGO__11 = 'data/VLANGO__11.png';
+        var img_bounds_VLANGO__11 = [[-40.769248902407455,-71.66018707284651],[-40.76284106082111,-71.65296892987566]];
+        var layer_VLANGO__11 = new L.imageOverlay(img_VLANGO__11,
+                                              img_bounds_VLANGO__11,
+                                              {pane: 'pane_VLANGO__11'});
+        bounds_group.addLayer(layer_VLANGO__11);
+        map.addLayer(layer_VLANGO__11);
+        map.createPane('pane_CurvasNivelVillaLaAngostura_12');
+        map.getPane('pane_CurvasNivelVillaLaAngostura_12').style.zIndex = 412;
+        var layer_CurvasNivelVillaLaAngostura_12 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5883097:cn_vla", {
+            pane: 'pane_CurvasNivelVillaLaAngostura_12',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.createPane('pane_Provincias_13');
+        map.getPane('pane_Provincias_13').style.zIndex = 413;
+        var layer_Provincias_13 = L.WMS.layer("https://editor.giscloud.com/wms/maps/2368740", "5882954:provincias__1", {
+            pane: 'pane_Provincias_13',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Provincias_13);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{"Provincias": layer_Provincias_13,"Curvas Nivel Villa La Angostura": layer_CurvasNivelVillaLaAngostura_12,"Villa La Angostura": layer_VLANGO__11,"Barrios Populares La Matanza": layer_BarriosPopularesLaMatanza_10,"Barrios Populares Pais": layer_BarriosPopularesPais_9,"Barrio 17 de Noviembre": layer_Barrio17deNoviembre_8,"Barrio Fiorito": layer_BarrioFiorito_7,"Rutas Nacionales": layer_RutasNacionales_6,"Red FFCC": layer_RedFFCC_5,"Partidos RMBA": layer_PartidosRMBA_3,"Radios Censales 2010": layer_RadiosCensales2010_2,"Curvas Nivel": layer_CurvasNivel_1,"OSM Standard": layer_OSMStandard_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
